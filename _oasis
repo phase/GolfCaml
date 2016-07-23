@@ -1,0 +1,17 @@
+Name: GolfCaml
+Version: 0.0.0
+Synopsis: GolfScript Interpreter in OCaml
+Authors: Jadon Fowler <jadonflower@gmail.com>
+License: https://www.mozilla.org/en-US/MPL/2.0/
+
+Description: GolfCaml is an interpreter for GolfScript in OCaml.
+Homepage: http://jadonfowler.xyz/
+
+OASISFormat: 0.4
+BuildTools: ocamlbuild
+Plugins: META (0.4), DevFiles (0.4)
+
+Executable "golfcaml"
+  Path: src
+  MainIs: golf.ml
+  CompiledObject: best
