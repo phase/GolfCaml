@@ -2,15 +2,19 @@ open Printf
 open Lexer
 
 (* Tokenize a line and interpret the tokens *)
-let interpret_line line =
-  let tokens = get_tokens line in
+let interpret_string str =
+  let tokens = get_tokens str in
   let print_token t =
     match t with
-    | INT s -> printf "INT: %s\n" s
+    | INT s -> Stack.push (Objects.Int (int_of_string s)) Objects.stack
     | IDENT s -> printf "IDENT: %s\n" s
-    | STRING s -> printf "STRING: %s\n" s
-    | COMMENT s -> printf "COMMENT: %s\n" s
-    | CODEBLOCK s -> printf "CODEBLOCK: %s\n" s in
+    | STRING s ->
+      let s = String.sub s 1 ((String.length s) - 2) in
+      Stack.push (Objects.String s) Objects.stack
+    | CODEBLOCK s ->
+      let s = String.sub s 1 ((String.length s) - 2) in
+      Stack.push (Objects.CodeBlock s) Objects.stack
+    | COMMENT _ -> () in
   Queue.iter print_token tokens
 
 (* Read all the lines in a file into a string list *)
@@ -24,7 +28,11 @@ let read_all_lines file_name =
   close_in_noerr in_channel;
   List.rev (lines)
 
-let () =
+let interpret_inputs () =
   for i = 0 to Array.length Sys.argv - 2 do
-    List.iter interpret_line (read_all_lines Sys.argv.(i + 1))
+    List.iter interpret_string (read_all_lines Sys.argv.(i + 1))
   done
+
+let () =
+  interpret_inputs ();
+  Objects.print_stack_reverse ()
