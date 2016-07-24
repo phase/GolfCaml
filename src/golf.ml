@@ -1,20 +1,13 @@
 open Printf
 open Objects
 
-(* Turn string into list of chars *)
-let explode s =
-  let rec exp i l =
-    if i < 0 then l else exp (i - 1) (s.[i] :: l) in
-  exp (String.length s - 1) []
-
-let interpret_char c =
-  printf "%c" c
+(* Token Regex from http://www.golfscript.com/golfscript/syntax.html *)
+let token_regex = Str.regexp "[a-zA-Z_][a-zA-Z0-9_]*|'(?:\\.|[^'])*'?|\"(?:\\.|[^\"])*\"?|-?[0-9]+|#[^\n\r]*|."
 
 (* Iterate of a line and interpret each char *)
 let interpret_line line =
-  let char_array = explode line in
-  List.iter interpret_char char_array;
-  printf "\n"
+  let tokens = Str.split token_regex line in
+  List.iter (fun (x) -> printf "%s\n" x) tokens
 
 (* Read all the lines in a file into a list of string *)
 let read_all_lines file_name =
@@ -24,7 +17,7 @@ let read_all_lines file_name =
     try Scanf.fscanf in_channel "%[^\r\n]\n" f
     with End_of_file -> lines in
   let lines = read_recursive [] in
-  let _ = close_in_noerr in_channel in
+  close_in_noerr in_channel;
   List.rev (lines)
 
 let () =
