@@ -6,10 +6,11 @@ let interpret_line line =
   let tokens = get_tokens line in
   let print_token t =
     match t with
-    | INT s -> printf "%s\n" s
-    | STRING s -> printf "%s\n" s
-    | IDENT s -> printf "%s\n" s
-    | COMMENT s -> printf "%s\n" s in
+    | INT s -> printf "INT: %s\n" s
+    | IDENT s -> printf "IDENT: %s\n" s
+    | STRING s -> printf "STRING: %s\n" s
+    | COMMENT s -> printf "COMMENT: %s\n" s
+    | CODEBLOCK s -> printf "CODEBLOCK: %s\n" s in
   Queue.iter print_token tokens
 
 (* Read all the lines in a file into a string list *)
