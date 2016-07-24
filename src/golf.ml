@@ -1,15 +1,18 @@
 open Printf
-open Objects
+open Lexer
 
-(* Token Regex from http://www.golfscript.com/golfscript/syntax.html *)
-let token_regex = Str.regexp "[a-zA-Z_][a-zA-Z0-9_]*|'(?:\\.|[^'])*'?|\"(?:\\.|[^\"])*\"?|-?[0-9]+|#[^\n\r]*|."
-
-(* Iterate of a line and interpret each char *)
+(* Tokenize a line and interpret the tokens *)
 let interpret_line line =
-  let tokens = Str.split token_regex line in
-  List.iter (fun (x) -> printf "%s\n" x) tokens
+  let tokens = get_tokens line in
+  let print_token t =
+    match t with
+    | INT s -> printf "%s\n" s
+    | STRING s -> printf "%s\n" s
+    | IDENT s -> printf "%s\n" s
+    | COMMENT s -> printf "%s\n" s in
+  Queue.iter print_token tokens
 
-(* Read all the lines in a file into a list of string *)
+(* Read all the lines in a file into a string list *)
 let read_all_lines file_name =
   let in_channel = open_in file_name in
   let rec read_recursive lines =

@@ -2,3 +2,4 @@ setup.data
 setup.log
 *.native
 _build
+src/lexer.ml
