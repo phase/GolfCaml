@@ -1,5 +1,6 @@
 open Printf
 open Lexer
+open Ops
 
 (* Tokenize a line and interpret the tokens *)
 let interpret_string str =
@@ -14,6 +15,7 @@ let interpret_string str =
     | CODEBLOCK s ->
       let s = String.sub s 1 ((String.length s) - 2) in
       Stack.push (Objects.CodeBlock s) Objects.stack
+    | OPERATOR s -> Ops.handle s
     | COMMENT _ -> () in
   Queue.iter print_token tokens
 

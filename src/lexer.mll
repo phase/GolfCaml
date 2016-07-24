@@ -5,6 +5,7 @@
     | IDENT of string
     | COMMENT of string
     | CODEBLOCK of string
+    | OPERATOR of string
 
   type state = CODE | LINE_COMMENT
   let state = ref CODE
@@ -19,10 +20,15 @@ let codeblock    = '{'([^ '}' ]+)'}'
 let str          = '"'([^ '"' ]+)'"'
 let unquoted     = ('/'?(alphanum+'/'?)+)
 
+let operator = [
+  '+' '-' '*' '/'
+]
+
 rule code = parse
 | space+                      { code lexbuf }
 | "#"                         { line_comment "" lexbuf }
 | str                         { STRING (Lexing.lexeme lexbuf) }
+| operator                    { OPERATOR (Lexing.lexeme lexbuf) }
 | codeblock                   { CODEBLOCK (Lexing.lexeme lexbuf) }
 | num+                        { INT (Lexing.lexeme lexbuf) }
 | alphanum+                   { unquoted (Lexing.lexeme lexbuf) lexbuf }
