@@ -10,11 +10,11 @@ let XX () =
   | Int aI -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
   | String aS -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
   | CodeBlock aCB -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
@@ -44,13 +44,61 @@ let add () =
   Stack.push c stack
 
 let sub () =
-  printf "Sub not implemented yet\n"
+  let b = Stack.pop stack in
+  let a = Stack.pop stack in
+  let c = match a with
+  | Int aI -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
+  | String aS -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
+  | CodeBlock aCB -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
+  in
+  Stack.push c stack
 
 let mul () =
-  printf "Mul not implemented yet\n"
+  let b = Stack.pop stack in
+  let a = Stack.pop stack in
+  let c = match a with
+  | Int aI -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
+  | String aS -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
+  | CodeBlock aCB -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
+  in
+  Stack.push c stack
 
 let div () =
-  printf "Div not implemented yet\n"
+  let b = Stack.pop stack in
+  let a = Stack.pop stack in
+  let c = match a with
+  | Int aI -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
+  | String aS -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
+  | CodeBlock aCB -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
+  in
+  Stack.push c stack
 
 let handle s =
   match s with
