@@ -6,15 +6,15 @@ Each operator is structured like this:
   | Int aI -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
+    | Block bB -> String "ERROR")
   | String aS -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
-  | CodeBlock aCB -> (match b with
+    | Block bB -> String "ERROR")
+  | Block aB -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
+    | Block bB -> String "ERROR")
 *)
 
 (* `+` operator *)
@@ -23,68 +23,71 @@ let add a b =
   | Int aI -> (match b with
     | Int bI -> Int (aI + bI)
     | String bS -> String ((string_of_int aI) ^ bS)
-    | CodeBlock bCB -> CodeBlock ((string_of_int aI) ^ " " ^ bCB))
+    | Block bB -> Block ((string_of_int aI) ^ " " ^ bB))
   | String aS -> (match b with
     | Int bI -> String (aS ^ (string_of_int bI))
     | String bS -> String (aS ^ bS)
-    | CodeBlock bCB -> CodeBlock (aS ^ " " ^ bCB))
-  | CodeBlock aCB -> (match b with
-    | Int bI -> CodeBlock (aCB ^ " " ^ (string_of_int bI))
-    | String bS -> CodeBlock (aCB ^ " " ^ bS)
-    | CodeBlock bCB -> CodeBlock (aCB ^ " " ^ bCB))
+    | Block bB -> Block (aS ^ " " ^ bB))
+  | Block aB -> (match b with
+    | Int bI -> Block (aB ^ " " ^ (string_of_int bI))
+    | String bS -> Block (aB ^ " " ^ bS)
+    | Block bB -> Block (aB ^ " " ^ bB))
 
 let sub a b =
   match a with
   | Int aI -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
+    | Block bB -> String "ERROR")
   | String aS -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
-  | CodeBlock aCB -> (match b with
+    | Block bB -> String "ERROR")
+  | Block aB -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
+    | Block bB -> String "ERROR")
 
 let mul a b =
   match a with
   | Int aI -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
+    | Block bB -> String "ERROR")
   | String aS -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
-  | CodeBlock aCB -> (match b with
+    | Block bB -> String "ERROR")
+  | Block aB -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
+    | Block bB -> String "ERROR")
 
 let div a b =
   match a with
   | Int aI -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
+    | Block bB -> String "ERROR")
   | String aS -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
-  | CodeBlock aCB -> (match b with
+    | Block bB -> String "ERROR")
+  | Block aB -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
-    | CodeBlock bCB -> String "ERROR")
+    | Block bB -> String "ERROR")
 
-let handle s =
+let binary_operator f =
   let b = Stack.pop stack in
   let a = Stack.pop stack in
-  let c = match s with
-  | "+" -> add a b
-  | "-" -> sub a b
-  | "*" -> mul a b
-  | "/" -> div a b
-  | _ -> Int 0 in
+  let c = f a b in
   Stack.push c stack
+
+let handle s =
+  match s with
+  | "+" -> binary_operator add
+  | "-" -> binary_operator sub
+  | "*" -> binary_operator mul
+  | "/" -> binary_operator div
+  | _ -> ()

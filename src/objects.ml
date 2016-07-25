@@ -1,13 +1,13 @@
 type stack_object =
   | Int of int
   | String of string
-  | CodeBlock of string
+  | Block of string
 
 let string_of_object o =
   match o with
   | Int i -> string_of_int i
   | String s -> s
-  | CodeBlock s -> "{" ^ s ^ "}"
+  | Block s -> "{" ^ s ^ "}"
 
 let stack : stack_object Stack.t = Stack.create ()
 
