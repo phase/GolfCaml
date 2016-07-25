@@ -1,17 +1,47 @@
 open Printf
 open Objects
 
+(*
+Each operator is structured like this:
+let XX () =
+  let b = Stack.pop stack in
+  let a = Stack.pop stack in
+  let c = match a with
+  | Int aI -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR"
+  | String aS -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR"
+  | CodeBlock aCB -> (match b with
+    | Int bI -> String "ERROR"
+    | String bS -> String "ERROR"
+    | CodeBlock bCB -> String "ERROR")
+  in
+  Stack.push c stack
+*)
+
+(* `+` operator *)
 let add () =
   let b = Stack.pop stack in
   let a = Stack.pop stack in
-  match a with
-  | Int ai ->
-    match b with
-    | Int bi ->
-      let ci = Int (ai + bi) in
-      Stack.push ci stack
-    | _ -> ()
-  | _ -> ()
+  let c = match a with
+  | Int aI -> (match b with
+    | Int bI -> Int (aI + bI)
+    | String bS -> String ((string_of_int aI) ^ bS)
+    | CodeBlock bCB -> CodeBlock ((string_of_int aI) ^ " " ^ bCB))
+  | String aS -> (match b with
+    | Int bI -> String (aS ^ (string_of_int bI))
+    | String bS -> String (aS ^ bS)
+    | CodeBlock bCB -> CodeBlock (aS ^ " " ^ bCB))
+  | CodeBlock aCB -> (match b with
+    | Int bI -> CodeBlock (aCB ^ " " ^ (string_of_int bI))
+    | String bS -> CodeBlock (aCB ^ " " ^ bS)
+    | CodeBlock bCB -> CodeBlock (aCB ^ " " ^ bCB))
+  in
+  Stack.push c stack
 
 let sub () =
   printf "Sub not implemented yet\n"
