@@ -3,10 +3,6 @@ open Objects
 
 (*
 Each operator is structured like this:
-let XX () =
-  let b = Stack.pop stack in
-  let a = Stack.pop stack in
-  let c = match a with
   | Int aI -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
@@ -19,15 +15,11 @@ let XX () =
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
     | CodeBlock bCB -> String "ERROR")
-  in
-  Stack.push c stack
 *)
 
 (* `+` operator *)
-let add () =
-  let b = Stack.pop stack in
-  let a = Stack.pop stack in
-  let c = match a with
+let add a b =
+  match a with
   | Int aI -> (match b with
     | Int bI -> Int (aI + bI)
     | String bS -> String ((string_of_int aI) ^ bS)
@@ -40,13 +32,9 @@ let add () =
     | Int bI -> CodeBlock (aCB ^ " " ^ (string_of_int bI))
     | String bS -> CodeBlock (aCB ^ " " ^ bS)
     | CodeBlock bCB -> CodeBlock (aCB ^ " " ^ bCB))
-  in
-  Stack.push c stack
 
-let sub () =
-  let b = Stack.pop stack in
-  let a = Stack.pop stack in
-  let c = match a with
+let sub a b =
+  match a with
   | Int aI -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
@@ -59,13 +47,9 @@ let sub () =
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
     | CodeBlock bCB -> String "ERROR")
-  in
-  Stack.push c stack
 
-let mul () =
-  let b = Stack.pop stack in
-  let a = Stack.pop stack in
-  let c = match a with
+let mul a b =
+  match a with
   | Int aI -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
@@ -78,13 +62,9 @@ let mul () =
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
     | CodeBlock bCB -> String "ERROR")
-  in
-  Stack.push c stack
 
-let div () =
-  let b = Stack.pop stack in
-  let a = Stack.pop stack in
-  let c = match a with
+let div a b =
+  match a with
   | Int aI -> (match b with
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
@@ -97,13 +77,14 @@ let div () =
     | Int bI -> String "ERROR"
     | String bS -> String "ERROR"
     | CodeBlock bCB -> String "ERROR")
-  in
-  Stack.push c stack
 
 let handle s =
-  match s with
-  | "+" -> add ()
-  | "-" -> sub ()
-  | "*" -> mul ()
-  | "/" -> div ()
-  | _ -> printf "Operator not found: %s\n" s
+  let b = Stack.pop stack in
+  let a = Stack.pop stack in
+  let c = match s with
+  | "+" -> add a b
+  | "-" -> sub a b
+  | "*" -> mul a b
+  | "/" -> div a b
+  | _ -> Int 0 in
+  Stack.push c stack
