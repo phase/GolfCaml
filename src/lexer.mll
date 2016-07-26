@@ -12,7 +12,7 @@
 }
 
 let newline      = '\n'
-let num          = [ '0'-'9' ]
+let num          = '-'? [ '0'-'9' ]
 let alphanum     = [ 'A'-'Z' 'a'-'z' '0'-'9' '_' ]
 let comment_line = "#"([^ '\n' ]+)
 let space        = [ ' ' '\t' '\n' ]
@@ -28,9 +28,9 @@ rule code = parse
 | space+                      { code lexbuf }
 | "#"                         { line_comment "" lexbuf }
 | str                         { STRING (Lexing.lexeme lexbuf) }
-| operator                    { OPERATOR (Lexing.lexeme lexbuf) }
-| codeblock                   { BLOCK (Lexing.lexeme lexbuf) }
 | num+                        { INT (Lexing.lexeme lexbuf) }
+| codeblock                   { BLOCK (Lexing.lexeme lexbuf) }
+| operator                    { OPERATOR (Lexing.lexeme lexbuf) }
 | alphanum+                   { unquoted (Lexing.lexeme lexbuf) lexbuf }
 
 and unquoted buff = parse
@@ -52,7 +52,7 @@ and line_comment buff = parse
   let get_tokens line =
     let queue : token Queue.t = Queue.create () in
     let lexbuf = Lexing.from_string line in
-    ( (* TODO: This looks hella ugly *)
+    (
       try
         while true do
           Queue.add (lexer lexbuf) queue
